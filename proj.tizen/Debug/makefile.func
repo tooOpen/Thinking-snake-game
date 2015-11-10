@@ -1,0 +1,27 @@
+
+# This file will define helper functions for makefile in windows
+define EOL
+
+endef
+
+define includes_file
+	$(eval _args := )
+	$(foreach obj,$(1),$(eval _args+=$(obj))$(if $(word 30,$(_args)),@printf ' %%s' '$(_args)' >> $(2) &$(EOL)$(eval _args:=)))
+	$(if $(_args),@printf ' %%s' '$(_args)' >> $(2))
+endef
+
+# To escape cmd.exe command line limit
+define build_with_file
+	-@$(RM) $(INC_FILE)
+	$(eval INC_FILE := $(word 1,$(1)))
+	$(eval COMPILER_CMD := $(word 1,$(2)))
+	$(eval COMPILER_OPTION := $(subst \,/,$(filter-out $(COMPILER_CMD),$(2))))
+	$(call includes_file,$(COMPILER_OPTION),$(INC_FILE))
+	@echo $(2)
+	@echo ...
+	@echo $(COMPILER_CMD) @$(INC_FILE)
+	@$(COMPILER_CMD) @$(INC_FILE)
+	-@$(RM) $(INC_FILE)
+endef
+
+.PHONY: long_file
