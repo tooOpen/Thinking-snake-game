@@ -17,3 +17,5 @@ C++
 
 개발툴
 Tizen SDK
+
+Youtube : https://www.youtube.com/watch?v=BDNLYfIKXYg
